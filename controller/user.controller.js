@@ -248,3 +248,112 @@ exports.isUserExist = async (req, res) => {
 
 }
 
+exports.getAll = async (req, res) => {
+    await userModel.find()
+        .then((success) => {
+            return res.json({
+                success: true,
+                message: `users details`,
+                data: success
+            })
+        })
+        .catch((error) => {
+            return res.json({
+                success: false,
+                message: "something went wrong", error
+            })
+        })
+}
+
+exports.getById = async (req, res) => {
+
+    const { userId } = req.params
+
+    if (!userId) {
+        return res.json({
+            success: false,
+            message: `please provide userId`
+        })
+    }
+
+    await userModel.findOne({ _id: mongoose.Types.ObjectId(userId) })
+        .then((success) => {
+            return res.json({
+                success: true,
+                message: `user details`,
+                data: success
+            })
+        })
+        .catch((error) => {
+            return res.json({
+                success: false,
+                message: "something went wrong", error
+            })
+        })
+}
+
+exports.delete = async (req, res) => {
+
+    const { userId } = req.params
+
+    if (!userId) {
+        return res.json({
+            success: false,
+            message: `please provide userId`
+        })
+    }
+
+    await userModel.findOneAndDelete({ _id: mongoose.Types.ObjectId(userId) })
+        .then((success) => {
+            return res.json({
+                success: true,
+                message: `user details deleted`,
+                data: success
+            })
+        })
+        .catch((error) => {
+            return res.json({
+                success: false,
+                message: "something went wrong", error
+            })
+        })
+}
+
+exports.updateUser = async (req, res) => {
+    const { userId } = req.params
+    const updateUser = req.body
+
+    if (!userId) {
+        return res.json({
+            success: false,
+            message: `please provide userId`
+        })
+    }
+
+    const isUserExist = await userModel.findOne({ _id: mongoose.Types.ObjectId(userId) })
+    if (!isUserExist) {
+        return res.json({
+            success: false,
+            message: `please provide valid userId`
+        })
+    }
+
+    await userModel.findOneAndUpdate({_id:mongoose.Types.ObjectId(userId)},
+    {
+        $set:updateUser
+    },
+    {returnOriginal:false})
+    .then((success) => {
+        return res.json({
+            success: true,
+            message: `user details updated`,
+            data: success
+        })
+    })
+    .catch((error) => {
+        return res.json({
+            success: false,
+            message: "something went wrong", error
+        })
+    })
+}
