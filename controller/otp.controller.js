@@ -101,10 +101,10 @@ exports.sendOtpMobile = async (req, res) => {
                 message: `OTP sent to ${phoneNumber}: ${otp}`
             })
         })
-        .catch((error)=>{
+        .catch((error) => {
             return res.json({
                 status: false,
-                message: `something went wrong`
+                message: `something went wrong`,error
             })
         });
 }
