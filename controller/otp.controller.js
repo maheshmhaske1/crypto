@@ -1,7 +1,7 @@
 const otpModel = require('../model/otp.model')
 const mailMiddleware = require('../middleware/mail.middleware')
 const accountSid = 'AC4c38c1cf8d3f902edbbbe41d980a7dbc';
-const authToken = 'bd285e004159b63f964969bd746200f1';
+const authToken = 'eaca1acfbb5584547743e2dd55c6c12d';
 const client = require('twilio')(accountSid, authToken);
 
 exports.sendOtp = async (req, res) => {
@@ -104,7 +104,7 @@ exports.sendOtpMobile = async (req, res) => {
         .catch((error) => {
             return res.json({
                 status: false,
-                message: `something went wrong`,error
+                message: `something went wrong`,errors
             })
         });
 }
